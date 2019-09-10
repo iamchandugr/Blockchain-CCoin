@@ -7,7 +7,7 @@ Created on Tue Aug 20 21:32:38 2019
 import datetime
 import hashlib
 import json
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, redirect
 class Blockchain:
     
     def __init__(self):
@@ -82,11 +82,6 @@ class Blockchain:
         return "Valid chain"
     
     def add_transactions_print(self,transaction_message):
-        self.transactions.append("RAKE gave back 1560 dollars to TENNY")
-        self.transactions.append("Checky gave back 100 dollars to dummy")
-        self.mine_block()
-        self.transactions.append("Dummy gave 100 dollars to checky")
-        self.mine_block()
         self.transactions.append(transaction_message)
         self.mine_block()
         self.print_chain()
@@ -116,11 +111,15 @@ def start():
     trans_message = ""
     if request.method == "POST":
         trans_message = "You gave "+request.form['amt']+" CCoin to "+request.form['to']
-    blockchain.add_transactions_print(trans_message)
-    response = {}
-    for i in range(len(blockchain.chain)):
-        response['Block '+str(i)] = blockchain.chain[i]
-    return jsonify(response), 200
+        blockchain.add_transactions_print(trans_message)
+    else:
+        response = {}
+        for i in range(len(blockchain.chain)):
+            response['Block '+str(i)] = blockchain.chain[i]
+        #return """<h3>{}</h3><button onclick="location.href = 'http://localhost:5000/;" id="myButton" >Click to do Transactions</button>""".format(jsonify(response))
+        return jsonify(response)
+    #return redirect("http://localhost:5000/", code=200)
+    return render_template('transaction_form.html', message="HELLO")
 
 @app.route('/')
 def start_form():
