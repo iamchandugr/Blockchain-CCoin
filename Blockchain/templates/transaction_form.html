@@ -14,7 +14,13 @@ input[type=text], select, textarea {
   border-radius: 4px;
   resize: vertical;
 }
-
+input[type=number], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
 label {
   padding: 12px 12px 12px 0;
   display: inline-block;
@@ -33,7 +39,15 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #45a049;
 }
-
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 .container {
   border-radius: 5px;
   background-color: #f2f2f2;
@@ -80,7 +94,7 @@ input[type=submit]:hover {
         <label for="fname">To</label>
       </div>
       <div class="col-75">
-        <input type="text" id="to" name="to" placeholder="Sending to..">
+        <input type="text" id="to" name="to" placeholder="Sending to.." required>
       </div>
     </div>
     <div class="row">
@@ -88,7 +102,7 @@ input[type=submit]:hover {
         <label for="lname">Amount</label>
       </div>
       <div class="col-75">
-        <input type="number" id="amt" name="amt" placeholder="Amount to send..">
+        <input type="number" id="amt" name="amt" placeholder="Amount to send.." required>
       </div>
     </div>
     <div class="row">
@@ -96,14 +110,19 @@ input[type=submit]:hover {
         <label for="subject">Subject</label>
       </div>
       <div class="col-75">
-        <textarea id="Message" name="message" placeholder="Write something.." style="height:200px"></textarea>
+        <textarea id="Message" name="message" placeholder="Write something.." style="height:200px" required></textarea>
       </div>
     </div>
     <div class="row">
       <input type="submit" value="Submit">
+      <input type="button" class="button" onclick="myFunction()" value="Print Blockchain"></input>
     </div>
   </form>
 </div>
-
+<script>
+function myFunction() {
+  location.replace("http://localhost:5000/print")
+}
+</script>
 </body>
 </html>
