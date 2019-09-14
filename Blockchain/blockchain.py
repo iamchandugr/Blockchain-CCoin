@@ -117,13 +117,13 @@ def start():
         for i in range(len(blockchain.chain)):
             response['Block '+str(i)] = blockchain.chain[i]
         #return """<h3>{}</h3><button onclick="location.href = 'http://localhost:5000/;" id="myButton" >Click to do Transactions</button>""".format(jsonify(response))
-        return render_template('print_blocks.html', result=response)
+        return render_template('print_blocks.html', result=response, port='5000')
     #return redirect("http://localhost:5000/", code=200)
-    return render_template('transaction_form.html', message="HELLO")
+    return render_template('transaction_form.html', port='5000')
 
 @app.route('/')
 def start_form():
-    return render_template('transaction_form.html', message="HELLO")
+    return render_template('transaction_form.html', port='5000')
     
 app.run()
 #blockchain.add_block_to_chain("RAKE gave back 1560 dollars to TENNY")

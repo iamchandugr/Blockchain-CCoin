@@ -88,7 +88,7 @@ input[type=submit]:hover {
 <p>Please add a Transaction</p>
 
 <div class="container">
-  <form action="/print" method="post">
+  <form action="/print" method="post" onsubmit="success()">
     <div class="row">
       <div class="col-25">
         <label for="fname">To</label>
@@ -121,7 +121,11 @@ input[type=submit]:hover {
 </div>
 <script>
 function myFunction() {
-  location.replace("http://localhost:5000/print")
+  var redirect_to = 'http://localhost:{{port}}/print'
+  window.location.href = redirect_to;
+}
+function success() {
+  alert("The transaction was successful");
 }
 </script>
 </body>
