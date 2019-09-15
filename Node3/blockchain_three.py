@@ -70,9 +70,10 @@ class Blockchain:
         global blockchain
         blockchain_local = Blockchain()
         for filename in Path('../../').glob('**/*.obj'):
-            file = open(filename, 'rb')
-            data = pickle.load(file)
-            blockchain_local = data
+            if os.path.getsize(filename) > 0:
+                filename = open(filename, 'rb')
+                blockchain_local = pickle.load(filename)
+                filename.close()
             print(" length is %",blockchain_local.check_chain_length())
             print(" length is %",blockchain.check_chain_length())
             if blockchain_local.check_chain_length() > blockchain.check_chain_length()-1:
@@ -80,8 +81,7 @@ class Blockchain:
                 blockchain = blockchain_local
                 file_local = open('transaction.obj', 'wb')
                 pickle.dump(blockchain, file_local)
-                file.close()
-            file.close()
+                file_local.close()
     
     def valid_chain(self):
         self.replace__with_long_chain()
@@ -141,6 +141,10 @@ def start():
         pickle.dump(blockchain, file)
     else:
         response = {}
+        blockchain.replace__with_long_chain()
+        file = open('transaction.obj', 'rb')
+        if os.path.getsize('transaction.obj') > 0:
+            blockchain = pickle.load(file)
         for i in range(len(blockchain.chain)):
             response['Block '+str(i)] = blockchain.chain[i]
         #return """<h3>{}</h3><button onclick="location.href = 'http://localhost:5000/;" id="myButton" >Click to do Transactions</button>""".format(jsonify(response))
