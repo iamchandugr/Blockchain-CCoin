@@ -7,6 +7,8 @@ Created on Tue Aug 20 21:32:38 2019
 import datetime
 import hashlib
 import json
+import pickle, os, glob
+from pathlib import Path
 from flask import Flask, jsonify, render_template, request, redirect
 class Blockchain:
     
@@ -16,7 +18,7 @@ class Blockchain:
         self.genesis_block()
     
     def previous_block(self):
-        print(" Chain length is %",len(self.chain))
+        #print(" Chain length is %",len(self.chain))
         return self.chain[len(self.chain)-1]
     
     def mine_block(self):
@@ -42,6 +44,7 @@ class Blockchain:
         return len(self.chain)
     
     def genesis_block(self):
+        global blockchain
         if self.check_chain_length() == 0:
             block = {
                     "Block_number" : 0,
@@ -62,8 +65,26 @@ class Blockchain:
                 }
         self.transactions = []
         self.chain.append(block);
-        
+    
+    def replace__with_long_chain(self):
+        global blockchain
+        blockchain_local = Blockchain()
+        for filename in Path('../../').glob('**/*.obj'):
+            file = open(filename, 'rb')
+            data = pickle.load(file)
+            blockchain_local = data
+            print(" length is %",blockchain_local.check_chain_length())
+            print(" length is %",blockchain.check_chain_length())
+            if blockchain_local.check_chain_length() > blockchain.check_chain_length()-1:
+                print(" length is %",blockchain_local.check_chain_length())
+                blockchain = blockchain_local
+                file_local = open('transaction.obj', 'wb')
+                pickle.dump(blockchain, file_local)
+                file.close()
+            file.close()
+    
     def valid_chain(self):
+        self.replace__with_long_chain()
         length = 1
         chain_len = len(self.chain)
         current_block = self.chain[0]
@@ -108,24 +129,44 @@ blockchain = Blockchain()
         
 @app.route('/print', methods = ['GET','POST'])
 def start():
+    global blockchain
+    file = open('transaction.obj', 'rb')
     trans_message = ""
     if request.method == "POST":
+        if os.path.getsize('transaction.obj') > 0:
+            blockchain = pickle.load(file)
         trans_message = "You gave "+request.form['amt']+" CCoin to "+request.form['to']
         blockchain.add_transactions_print(trans_message)
+        file = open('transaction.obj', 'wb')
+        pickle.dump(blockchain, file)
     else:
         response = {}
         for i in range(len(blockchain.chain)):
             response['Block '+str(i)] = blockchain.chain[i]
         #return """<h3>{}</h3><button onclick="location.href = 'http://localhost:5000/;" id="myButton" >Click to do Transactions</button>""".format(jsonify(response))
-        return render_template('print_blocks.html', result=response, port='5000')
+        return render_template('print_blocks.html', result=response, port=5000)
     #return redirect("http://localhost:5000/", code=200)
-    return render_template('transaction_form.html', port='5000')
+    file.close()
+    return render_template('transaction_form.html', port=5000)
 
 @app.route('/')
 def start_form():
-    return render_template('transaction_form.html', port='5000')
+    global blockchain
+    file = ""
+    try:
+        file = open('transaction.obj', 'rb')
+        if os.path.getsize('transaction.obj') > 0:
+            blockchain = pickle.load(file)
+            blockchain.valid_chain()
+        else:
+            pickle.dump(blockchain,file)
+    except:
+        print("No file found. So creating one...")
+        file = open('transaction.obj', 'wb+')
+    file.close()
+    return render_template('transaction_form.html', port=5000)
     
-app.run()
+app.run(host='0.0.0.0', port= 5000)
 #blockchain.add_block_to_chain("RAKE gave back 1560 dollars to TENNY")
 #blockchain.add_block_to_chain("Checky gave back 100 dollars to dummy")
 #blockchain.add_block_to_chain("Dummy gave 100 dollars to checky")
