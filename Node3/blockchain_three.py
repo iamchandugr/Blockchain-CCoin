@@ -89,7 +89,7 @@ class Blockchain:
     def print_chain(self):
         print(self.chain)
             
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates")
 
 blockchain = Blockchain()
 
