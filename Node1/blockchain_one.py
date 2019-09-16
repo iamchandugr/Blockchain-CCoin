@@ -66,7 +66,7 @@ class Blockchain:
         self.transactions = []
         self.chain.append(block);
     
-    def replace__with_long_chain(self):
+    def replace_with_long_chain(self):
         global blockchain
         blockchain_local = Blockchain()
         for filename in Path('../../').glob('**/*.obj'):
@@ -76,16 +76,19 @@ class Blockchain:
                 filename.close()
             print(" length is %",blockchain_local.check_chain_length())
             print(" length is %",blockchain.check_chain_length())
-            if blockchain_local.check_chain_length() > blockchain.check_chain_length()-1:
-                print(" length is %",blockchain_local.check_chain_length())
-                blockchain = blockchain_local
-                file_local = open('transaction.obj', 'wb')
-                pickle.dump(blockchain, file_local)
-                file_local.close()
-            
+            if blockchain.valid_chain() == "Valid chain":
+                print("Valid chain so checking...")
+                if blockchain_local.check_chain_length() > blockchain.check_chain_length()-1:
+                    print(" length is %",blockchain_local.check_chain_length())
+                    if blockchain_local.valid_chain() == "Valid chain":
+                        blockchain = blockchain_local
+                        file_local = open('transaction.obj', 'wb')
+                        pickle.dump(blockchain, file_local)
+                        file_local.close()
+            else:
+                blockchain = Blockchain()
     
     def valid_chain(self):
-        self.replace__with_long_chain()
         length = 1
         chain_len = len(self.chain)
         current_block = self.chain[0]
@@ -142,7 +145,7 @@ def start():
         pickle.dump(blockchain, file)
     else:
         response = {}
-        blockchain.replace__with_long_chain()
+        blockchain.replace_with_long_chain()
         file = open('transaction.obj', 'rb')
         if os.path.getsize('transaction.obj') > 0:
             blockchain = pickle.load(file)
@@ -162,7 +165,7 @@ def start_form():
         file = open('transaction.obj', 'rb')
         if os.path.getsize('transaction.obj') > 0:
             blockchain = pickle.load(file)
-            blockchain.valid_chain()
+            blockchain.replace_with_long_chain()
         else:
             pickle.dump(blockchain,file)
     except:
