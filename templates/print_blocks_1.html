@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html >
+<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	  <style>
+		  .container {
+			border-radius: 5px;
+			background-color: #f2f2f2;
+			padding: 20px;
+			}
+		  .button {
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			border: none;
+			padding: 12px 20px;
+			border-radius: 4px;
+			cursor: pointer;
+			}
+		table {
+		border-collapse: collapse;
+		width: 100%;
+		}
+
+		th, td {
+		text-align: left;
+		padding: 8px;
+		}
+
+		tr:nth-child(even) {background-color: #f2f2f2;}
+		.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+</style>
+<script>
+function Ask_Redirect() {
+    var ask = window.confirm("Are you sure you do another transaction?");
+    if (ask) {
+
+        window.location.href = "http://localhost:{{port}}/";
+
+    }
+}
+</script>
+<body>
+  <div class="container">
+	<table border='1'>
+			
+			<tr>
+					<th>Block Number</th>
+					<th>Nounce</th>
+					<th>Time</th>
+					<th>Transaction</th>
+					<th>Previous Hash</th>
+			</tr>
+			{% for key, value in result.items() %}
+			
+       		<tr>
+			{% for keyOne, valueOne in value.items() %}
+        	<!--<th> {{ keyOne }} </th>-->
+        	<td> {{ valueOne }} </td>
+    		
+		   {% endfor %}
+		</tr>
+		{% endfor %}
+		
+	</table>
+	<div class="row">
+	<button onclick="Ask_Redirect()" id="myButton" class="float-left submit-button" >Another Transaction</button>
+</div>
+</div>
+  
+  
+</body>
+</html>

@@ -1,48 +1,29 @@
 <!DOCTYPE html>
-<html >
+<html lang="en">
 <head>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-	  <style>
-		  .container {
-			border-radius: 5px;
-			background-color: #f2f2f2;
-			padding: 20px;
-			}
-		  .button {
-			background-color: #4CAF50;
-			border: none;
-			color: white;
-			border: none;
-			padding: 12px 20px;
-			border-radius: 4px;
-			cursor: pointer;
-			}
-		table {
-		border-collapse: collapse;
-		width: 100%;
-		}
+	<title>Print Blocks</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animate/animate.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+<!--===============================================================================================-->
+</head>
 
-		th, td {
-		text-align: left;
-		padding: 8px;
-		}
-
-		tr:nth-child(even) {background-color: #f2f2f2;}
-		.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 600px) {
-  .col-25, .col-75, input[type=submit] {
-    width: 100%;
-    margin-top: 0;
-  }
-}
-</style>
-<script>
+<body>
+	<script>
 function Ask_Redirect() {
     var ask = window.confirm("Are you sure you do another transaction?");
     if (ask) {
@@ -52,34 +33,50 @@ function Ask_Redirect() {
     }
 }
 </script>
-<body>
-  <div class="container">
-	<table border='1'>
-			
-			<tr>
-					<th>Block Number</th>
-					<th>Nounce</th>
-					<th>Time</th>
-					<th>Transaction</th>
-					<th>Previous Hash</th>
-			</tr>
-			{% for key, value in result.items() %}
-			
-       		<tr>
-			{% for keyOne, valueOne in value.items() %}
-        	<!--<th> {{ keyOne }} </th>-->
-        	<td> {{ valueOne }} </td>
+	<div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100">
+					<table>
+						<thead>
+							<tr class="table100-head">
+								<th class="column1">Block Number</th>
+								<th class="column2">Nounce</th>
+								<th class="column3">Time</th>
+								<th class="column4">Transaction</th>
+								<th class="column5">Previous Hash</th>
+							</tr>
+						</thead>
+						<tbody>
+								{% for key, value in result.items() %}
+								<tr>
+									{% for keyOne, valueOne in value.items() %}
+									<td class="column1">{{ valueOne }} </td>
     		
-		   {% endfor %}
-		</tr>
-		{% endfor %}
-		
-	</table>
-	<div class="row">
-	<button onclick="Ask_Redirect()" id="myButton" class="float-left submit-button" >Another Transaction</button>
-</div>
-</div>
-  
-  
+									{% endfor %}
+									
+								</tr>
+								{% endfor %}
+						</tbody>
+					</table>
+					<button onclick="Ask_Redirect()" id="myButton" class="float-left submit-button" >Another Transaction</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+
+<!--===============================================================================================-->	
+	<script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='js/main.js')}}"></script>
+
 </body>
 </html>

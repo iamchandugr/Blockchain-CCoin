@@ -27,12 +27,7 @@ class Blockchain:
         found_golden_hash = False
         prev_block = self.previous_block()
         prev_nounce = prev_block["nounce"]
-        while found_golden_hash is False:
-            hash_value = hashlib.sha512(str(nounce**2 - prev_nounce**2).encode()).hexdigest()
-            if hash_value[:4] == '0000':
-                found_golden_hash = True
-            else:
-                nounce += 1
+        hash_value = hashlib.sha512(str(nounce**2 - prev_nounce**2).encode()).hexdigest()  
         prev_block_hash = self.hash_block(prev_block)
         self.add_block_to_chain(nounce,prev_block_hash)
         
@@ -66,7 +61,7 @@ class Blockchain:
         self.transactions = []
         self.chain.append(block);
     
-    def replace_with_long_chain(self):
+    def replace__with_long_chain(self):
         global blockchain
         blockchain_local = Blockchain()
         for filename in Path('../../').glob('**/*.obj'):
@@ -76,19 +71,16 @@ class Blockchain:
                 filename.close()
             print(" length is %",blockchain_local.check_chain_length())
             print(" length is %",blockchain.check_chain_length())
-            if blockchain.valid_chain() == "Valid chain":
-                print("Valid chain so checking...")
-                if blockchain_local.check_chain_length() > blockchain.check_chain_length()-1:
-                    print(" length is %",blockchain_local.check_chain_length())
-                    if blockchain_local.valid_chain() == "Valid chain":
-                        blockchain = blockchain_local
-                        file_local = open('transaction.obj', 'wb')
-                        pickle.dump(blockchain, file_local)
-                        file_local.close()
-            else:
-                blockchain = Blockchain()
+            if blockchain_local.check_chain_length() > blockchain.check_chain_length()-1:
+                print(" length is %",blockchain_local.check_chain_length())
+                blockchain = blockchain_local
+                file_local = open('transaction.obj', 'wb')
+                pickle.dump(blockchain, file_local)
+                file_local.close()
+            
     
     def valid_chain(self):
+        self.replace__with_long_chain()
         length = 1
         chain_len = len(self.chain)
         current_block = self.chain[0]
@@ -114,7 +106,7 @@ class Blockchain:
     def print_chain(self):
         print(self.chain)
             
-app = Flask(__name__, template_folder="../templates", static_folder="../static")
+app = Flask(__name__, template_folder="../templates")
 
 blockchain = Blockchain()
 
@@ -145,17 +137,17 @@ def start():
         pickle.dump(blockchain, file)
     else:
         response = {}
-        blockchain.replace_with_long_chain()
+        blockchain.replace__with_long_chain()
         file = open('transaction.obj', 'rb')
         if os.path.getsize('transaction.obj') > 0:
             blockchain = pickle.load(file)
         for i in range(len(blockchain.chain)):
             response['Block '+str(i)] = blockchain.chain[i]
         #return """<h3>{}</h3><button onclick="location.href = 'http://localhost:5000/;" id="myButton" >Click to do Transactions</button>""".format(jsonify(response))
-        return render_template('print_blocks.html', result=response, port=5002)
+        return render_template('print_blocks.html', result=response, port=5001)
     #return redirect("http://localhost:5000/", code=200)
     file.close()
-    return render_template('transaction_form.html', port=5002)
+    return render_template('transaction_form.html', port=5001)
 
 @app.route('/')
 def start_form():
@@ -172,9 +164,9 @@ def start_form():
         print("No file found. So creating one...")
         file = open('transaction.obj', 'wb+')
     file.close()
-    return render_template('transaction_form.html', port=5002)
+    return render_template('transaction_form.html', port=5001)
     
-app.run(host='0.0.0.0', port= 5002)
+app.run(host='0.0.0.0', port= 5001)
 #blockchain.add_block_to_chain("RAKE gave back 1560 dollars to TENNY")
 #blockchain.add_block_to_chain("Checky gave back 100 dollars to dummy")
 #blockchain.add_block_to_chain("Dummy gave 100 dollars to checky")
