@@ -74,8 +74,6 @@ class Blockchain:
                 filename = open(filename, 'rb')
                 blockchain_local = pickle.load(filename)
                 filename.close()
-            print(" length is %",blockchain_local.check_chain_length())
-            print(" length is %",blockchain.check_chain_length())
             if blockchain.valid_chain() == "Valid chain":
                 print("Valid chain so checking...")
                 if blockchain_local.check_chain_length() > blockchain.check_chain_length()-1:
