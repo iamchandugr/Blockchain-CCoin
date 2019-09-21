@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Print Blocks</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animate/animate.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+<!--===============================================================================================-->
+</head>
+
+<body>
+	<script>
+function Ask_Redirect() {
+    var ask = window.confirm("Are you sure you do another transaction?");
+    if (ask) {
+
+        window.location.href = "http://localhost:{{port}}/";
+
+    }
+}
+</script>
+	<div class="limiter">
+		<div class="container-table100">
+			<div class="wrap-table100">
+				<div class="table100">
+					<table>
+						<thead>
+							<tr class="table100-head">
+								<th class="column1">Block Number</th>
+								<th class="column2">Nounce</th>
+								<th class="column3">Time</th>
+								<th class="column4">Transaction</th>
+								<th class="column5">Previous Hash</th>
+							</tr>
+						</thead>
+						<tbody>
+								{% for key, value in result.items() %}
+								<tr>
+									{% for keyOne, valueOne in value.items() %}
+									<td class="column1">{{ valueOne }} </td>
+    		
+									{% endfor %}
+									
+								</tr>
+								{% endfor %}
+						</tbody>
+					</table>
+					<button onclick="Ask_Redirect()" class="button button4" >Another Transaction</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+
+<!--===============================================================================================-->	
+	<script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='js/main.js')}}"></script>
+
+</body>
+</html>
